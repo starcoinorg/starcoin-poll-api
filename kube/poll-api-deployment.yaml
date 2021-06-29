@@ -5,7 +5,7 @@ metadata:
   labels:
     app: poll-api
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: poll-api
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: poll-api
-        image: starcoin/starcoin_poll:sha-f9707a9
+        image: starcoin/starcoin_poll:sha-521dd8c
         ports:
         - containerPort: 8600
         env:
