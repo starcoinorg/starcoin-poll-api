@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>org.starcoin.poll.api</groupId>
-    <artifactId>starcooin-poll-api</artifactId>
+    <artifactId>starcoin-poll-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>starcooin-poll-api</name>
+    <name>starcoin-poll-api</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
