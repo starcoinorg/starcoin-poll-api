@@ -1,31 +1,17 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: service-poll-api
   labels:
-    app: service-poll-api
+    app: poll-api
+  name: poll-api
 spec:
-  replicas: 3
+  ports:
+  - port: 80
+    name: http
+    protocol: TCP
+    targetPort: 8600
   selector:
-    matchLabels:
-      app: service-poll-api
-  template:
-    metadata:
-      labels:
-        app: service-poll-api
-    spec:
-      containers:
-      - name: service-poll-api
-        image: starcoin/starcoin_poll:sha-f9707a9
-        ports:
-        - containerPort: 8600
-        env:
-        - name: STARCOIN_MYSQL_URL
-          value: "jdbc:mysql://starcoin-mysql-1.c0bz9kehdvnb.ap-northeast-1.rds.amazonaws.com:3306/poll?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false"
-        - name: STARCOIN_MYSQL_USER
-          value: "admin"
-        - name: STARCOIN_MYSQL_PWD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-pwd
-              key: password
+    app: poll-api
+  type: LoadBalancer
+status:
+  loadBalancer: {}
