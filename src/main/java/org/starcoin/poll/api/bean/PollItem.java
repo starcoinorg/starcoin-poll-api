@@ -1,15 +1,13 @@
 package org.starcoin.poll.api.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "poll_item")
 public class PollItem {
 
     @Id
+    @GeneratedValue
     @Column(nullable = false, unique = true)
     private Long id;
 
@@ -45,6 +43,9 @@ public class PollItem {
 
     @Column
     private String status;
+
+    @Column
+    private String network;
 
     public Long getId() {
         return id;
@@ -140,5 +141,13 @@ public class PollItem {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(String network) {
+        this.network = network;
     }
 }

@@ -11,8 +11,6 @@ import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.dao.PollItemRepository;
 import org.starcoin.poll.api.vo.PageResult;
 
-import java.io.IOException;
-
 @Service
 public class PollItemService {
 
@@ -25,13 +23,8 @@ public class PollItemService {
         this.pollItemRepository = pollItemRepository;
     }
 
-    public boolean add(Long id, Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status) throws IOException {
-        PollItem item = get(id);
-        if (null != item) {
-            return false;
-        }
-        item = new PollItem();
-        item.setId(id);
+    public boolean add(Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status, String network) {
+        PollItem item = new PollItem();
         item.setAgainstVotes(againstVotes);
         item.setCreator(creator);
         item.setDescription(description);
@@ -43,16 +36,17 @@ public class PollItemService {
         item.setTitleEn(titleEn);
         item.setTypeArgs1(typeArgs1);
         item.setStatus(status);
+        item.setNetwork(network);
         pollItemRepository.save(item);
         return true;
     }
 
-    public PollItem get(Long id) throws IOException {
+    public PollItem get(Long id) {
         return pollItemRepository.findById(id).orElse(null);
     }
 
-    public PageResult<PollItem> getList(int page, int size) throws IOException {
-        Page<PollItem> list = pollItemRepository.findAll(PageRequest.of(page, size));
+    public PageResult<PollItem> getListByNetwork(String network, int page, int size) {
+        Page<PollItem> list = pollItemRepository.findByNetwork(network, PageRequest.of(page, size));
         PageResult<PollItem> result = new PageResult<>();
         result.setTotalPage(list.getTotalPages());
         result.setTotalElements((int) list.getTotalElements());
@@ -61,7 +55,7 @@ public class PollItemService {
     }
 
     @Transactional
-    public boolean modif(Long id, Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status) throws IOException {
+    public boolean modif(Long id, Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status, String network) {
         PollItem item = get(id);
         if (null == item) {
             return false;
@@ -99,12 +93,15 @@ public class PollItemService {
         if (null != status && status.length() > 0) {
             item.setStatus(status);
         }
+        if (null != network && network.length() > 0) {
+            item.setNetwork(network);
+        }
         pollItemRepository.save(item);
         return true;
     }
 
     @Transactional
-    public void del(Long id) throws IOException {
+    public void del(Long id) {
         PollItem item = get(id);
         if (null == item) {
             return;
