@@ -7,7 +7,9 @@ import org.starcoin.poll.api.bean.PollItem;
 
 public interface PollItemRepository extends JpaRepository<PollItem, Long> {
 
-    Page<PollItem> findByNetwork(String network, Pageable page);
+    PollItem findByIdAndDeletedAtIsNull(Long id);
 
-    PollItem findByTitleOrTitleEn(String title, String titleEn);
+    Page<PollItem> findByNetworkAndDeletedAtIsNull(String network, Pageable page);
+
+    PollItem findByTitleOrTitleEnAndDeletedAtIsNull(String title, String titleEn);
 }

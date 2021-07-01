@@ -10,30 +10,12 @@ import javax.persistence.*;
 public class PollItem {
 
     @Id
-    @GeneratedValue
     @Column(nullable = false, unique = true)
+    @GeneratedValue
     private Long id;
 
-    @Column
-    private Integer againstVotes;
-
-    @Column
-    private String creator;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    @Column(columnDefinition = "TEXT")
-    private String descriptionEn;
-
-    @Column
-    private Long endTime;
-
-    @Column
-    private Integer forVotes;
-
-    @Column
-    private String link;
+    @Column(length = 20)
+    private String network;
 
     @Column
     private String title;
@@ -41,14 +23,41 @@ public class PollItem {
     @Column
     private String titleEn;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(columnDefinition = "TEXT")
+    private String descriptionEn;
+
+    @Column(length = 70)
+    private String creator;
+
+    @Column
+    private Long againstVotes;
+
+    @Column
+    private Long forVotes;
+
+    @Column
+    private String link;
+
     @Column(name = "type_args_1")
     private String typeArgs1;
 
     @Column
-    private String status;
+    private Long endTime;
+
+    @Column(length = 2, scale = 2)
+    private Integer status;
 
     @Column
-    private String network;
+    private Long createdAt;
+
+    @Column
+    private Long updatedAt;
+
+    @Column
+    private Long deletedAt;
 
     public Long getId() {
         return id;
@@ -58,60 +67,12 @@ public class PollItem {
         this.id = id;
     }
 
-    public Integer getAgainstVotes() {
-        return againstVotes;
+    public String getNetwork() {
+        return network;
     }
 
-    public void setAgainstVotes(Integer againstVotes) {
-        this.againstVotes = againstVotes;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescriptionEn() {
-        return descriptionEn;
-    }
-
-    public void setDescriptionEn(String descriptionEn) {
-        this.descriptionEn = descriptionEn;
-    }
-
-    public Long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Long endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getForVotes() {
-        return forVotes;
-    }
-
-    public void setForVotes(Integer forVotes) {
-        this.forVotes = forVotes;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
+    public void setNetwork(String network) {
+        this.network = network;
     }
 
     public String getTitle() {
@@ -130,6 +91,54 @@ public class PollItem {
         this.titleEn = titleEn;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescriptionEn() {
+        return descriptionEn;
+    }
+
+    public void setDescriptionEn(String descriptionEn) {
+        this.descriptionEn = descriptionEn;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Long getAgainstVotes() {
+        return againstVotes;
+    }
+
+    public void setAgainstVotes(Long againstVotes) {
+        this.againstVotes = againstVotes;
+    }
+
+    public Long getForVotes() {
+        return forVotes;
+    }
+
+    public void setForVotes(Long forVotes) {
+        this.forVotes = forVotes;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public String getTypeArgs1() {
         return typeArgs1;
     }
@@ -138,19 +147,43 @@ public class PollItem {
         this.typeArgs1 = typeArgs1;
     }
 
-    public String getStatus() {
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public String getNetwork() {
-        return network;
+    public Long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setNetwork(String network) {
-        this.network = network;
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Long deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

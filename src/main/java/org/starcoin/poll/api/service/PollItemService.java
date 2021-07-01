@@ -23,7 +23,7 @@ public class PollItemService {
         this.pollItemRepository = pollItemRepository;
     }
 
-    public boolean add(Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status, String network) {
+    public boolean add(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
         PollItem item = getByTitleOrTitleEn(title, titleEn);
         if (null != item) {
             return false;
@@ -41,20 +41,22 @@ public class PollItemService {
         item.setTypeArgs1(typeArgs1);
         item.setStatus(status);
         item.setNetwork(network);
+        item.setCreatedAt(System.currentTimeMillis());
+        item.setUpdatedAt(System.currentTimeMillis());
         pollItemRepository.save(item);
         return true;
     }
 
     public PollItem get(Long id) {
-        return pollItemRepository.findById(id).orElse(null);
+        return pollItemRepository.findByIdAndDeletedAtIsNull(id);
     }
 
     public PollItem getByTitleOrTitleEn(String title, String titleEn) {
-        return pollItemRepository.findByTitleOrTitleEn(title, titleEn);
+        return pollItemRepository.findByTitleOrTitleEnAndDeletedAtIsNull(title, titleEn);
     }
 
     public PageResult<PollItem> getListByNetwork(String network, int page, int size) {
-        Page<PollItem> list = pollItemRepository.findByNetwork(network, PageRequest.of(page, size));
+        Page<PollItem> list = pollItemRepository.findByNetworkAndDeletedAtIsNull(network, PageRequest.of(page, size));
         PageResult<PollItem> result = new PageResult<>();
         result.setCurrentPage(page);
         result.setTotalPage(list.getTotalPages());
@@ -64,49 +66,65 @@ public class PollItemService {
     }
 
     @Transactional
-    public boolean modif(Long id, Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status, String network) {
+    public boolean modif(Long id, Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
         PollItem item = get(id);
         if (null == item) {
             return false;
         }
+        boolean isUpdate = false;
         if (null != againstVotes) {
             item.setAgainstVotes(againstVotes);
+            isUpdate = true;
         }
         if (null != creator && creator.length() > 0) {
             item.setCreator(creator);
+            isUpdate = true;
         }
         if (null != description && description.length() > 0) {
             item.setDescription(description);
+            isUpdate = true;
         }
         if (null != descriptionEn && descriptionEn.length() > 0) {
             item.setDescription(descriptionEn);
+            isUpdate = true;
         }
         if (null != endTime) {
             item.setEndTime(endTime);
+            isUpdate = true;
         }
         if (null != forVotes) {
             item.setForVotes(forVotes);
+            isUpdate = true;
         }
         if (null != link && link.length() > 0) {
             item.setLink(link);
+            isUpdate = true;
         }
         if (null != title && title.length() > 0) {
             item.setTitle(title);
+            isUpdate = true;
         }
         if (null != titleEn && titleEn.length() > 0) {
             item.setTitle(titleEn);
+            isUpdate = true;
         }
         if (null != typeArgs1 && typeArgs1.length() > 0) {
             item.setTypeArgs1(typeArgs1);
+            isUpdate = true;
         }
-        if (null != status && status.length() > 0) {
+        if (null != status) {
             item.setStatus(status);
+            isUpdate = true;
         }
         if (null != network && network.length() > 0) {
             item.setNetwork(network);
+            isUpdate = true;
         }
-        pollItemRepository.save(item);
-        return true;
+        if (isUpdate) {
+            item.setUpdatedAt(System.currentTimeMillis());
+            pollItemRepository.saveAndFlush(item);
+        }
+        return isUpdate;
     }
 
     @Transactional
@@ -115,6 +133,7 @@ public class PollItemService {
         if (null == item) {
             return;
         }
-        pollItemRepository.deleteById(id);
+        item.setDeletedAt(System.currentTimeMillis());
+        pollItemRepository.saveAndFlush(item);
     }
 }

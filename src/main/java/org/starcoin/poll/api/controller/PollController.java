@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-@SuppressWarnings("ALL")
 @Api(tags = {"投票列表配置接口"}, description = "投票列表配置接口，包含管理服务API")
 @RestController
 @RequestMapping("v1/polls")
@@ -62,22 +61,22 @@ public class PollController {
 
     @ApiOperation(value = "添加配置信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "againstVotes", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "againstVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "creator", value = "", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "description", value = "中文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "descriptionEn", value = "英文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "endTime", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "forVotes", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "forVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "link", value = "", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "title", value = "中文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "titleEn", value = "英文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "typeArgs1", value = "", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "status", value = "", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "status", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
             @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/add")
-    public Result addPollItem(Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status, String network) throws UnsupportedEncodingException {
+    public Result addPollItem(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) throws UnsupportedEncodingException {
         boolean result = pollItemService.add(againstVotes, creator, URLDecoder.decode(description, "UTF-8"), URLDecoder.decode(descriptionEn, "UTF-8"), endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
         if (result) {
             return ResultUtils.success();
@@ -88,22 +87,22 @@ public class PollController {
     @ApiOperation(value = "修改配置信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键ID", required = true, dataType = "Long", dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "againstVotes", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "againstVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "creator", value = "", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "description", value = "中文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "descriptionEn", value = "英文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "endTime", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "forVotes", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "forVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "link", value = "", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "title", value = "中文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "titleEn", value = "英文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "typeArgs1", value = "", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "status", value = "", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "status", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
             @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/modif")
-    public Result modifPollItem(Long id, Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status, String network) throws UnsupportedEncodingException {
+    public Result modifPollItem(Long id, Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) throws UnsupportedEncodingException {
         boolean result = pollItemService.modif(id, againstVotes, creator, URLDecoder.decode(description, "UTF-8"), URLDecoder.decode(descriptionEn, "UTF-8"), endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
         if (result) {
             return ResultUtils.success();
