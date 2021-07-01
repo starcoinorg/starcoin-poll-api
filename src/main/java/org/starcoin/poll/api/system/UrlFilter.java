@@ -20,7 +20,7 @@ public class UrlFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String uri = ((HttpServletRequest) request).getRequestURI();
         System.out.println(uri);
-        if ("/v1/polls".equals(uri.substring(0, 9)) || uri.contains("swagger") || uri.contains("v3/api-docs")) {
+        if ((uri.length() >= 9 && "/v1/polls".equals(uri.substring(0, 9))) || uri.contains("swagger") || uri.contains("v3/api-docs")) {
             chain.doFilter(request, response);
         } else {
             doResponse(response);

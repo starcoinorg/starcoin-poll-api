@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.starcoin.poll.api.bean.Event;
 import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.service.PollItemService;
 import org.starcoin.poll.api.vo.PageResult;
@@ -15,7 +16,7 @@ import org.starcoin.poll.api.vo.ResultUtils;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.util.List;
 
 @Api(tags = {"投票列表配置接口"}, description = "投票列表配置接口，包含管理服务API")
 @RestController
@@ -77,7 +78,7 @@ public class PollController {
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/add")
     public Result addPollItem(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) throws UnsupportedEncodingException {
-        boolean result = pollItemService.add(againstVotes, creator, URLDecoder.decode(description, "UTF-8"), URLDecoder.decode(descriptionEn, "UTF-8"), endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
+        boolean result = pollItemService.add(againstVotes, creator, description, descriptionEn, endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
         if (result) {
             return ResultUtils.success();
         }
@@ -103,7 +104,7 @@ public class PollController {
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/modif")
     public Result modifPollItem(Long id, Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) throws UnsupportedEncodingException {
-        boolean result = pollItemService.modif(id, againstVotes, creator, URLDecoder.decode(description, "UTF-8"), URLDecoder.decode(descriptionEn, "UTF-8"), endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
+        boolean result = pollItemService.modif(id, againstVotes, creator, description, descriptionEn, endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
         if (result) {
             return ResultUtils.success();
         }
@@ -141,11 +142,12 @@ public class PollController {
         String resultStr = restTemplate.getForObject(url, String.class);
         logger.info("HttpUtils.get_response：" + resultStr);
         JSONObject result = JSONObject.parseObject(resultStr);
-        PageResult pageResult = new PageResult<>();
+        PageResult<Event> pageResult = new PageResult<>();
         pageResult.setCurrentPage(page);
         pageResult.setTotalPage(0);
         pageResult.setTotalElements(result.getIntValue("total"));
-        pageResult.setList(result.getJSONArray("contents"));
+        List<Event> list = JSONObject.parseArray(result.getJSONArray("contents").toJSONString(), Event.class);
+        pageResult.setList(list);
         return ResultUtils.success(pageResult);
     }
 }
