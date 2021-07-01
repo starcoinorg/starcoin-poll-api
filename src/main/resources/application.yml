@@ -1,5 +1,6 @@
 server:
   port: 8600
+  max-http-header-size: 102400
 
 spring:
   profiles:
