@@ -5,11 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.dao.PollItemRepository;
 import org.starcoin.poll.api.vo.PageResult;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Service
 public class PollItemService {
@@ -17,6 +21,9 @@ public class PollItemService {
     private static final Logger logger = LoggerFactory.getLogger(PollItemService.class);
 
     private final PollItemRepository pollItemRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public PollItemService(PollItemRepository pollItemRepository) {
@@ -116,5 +123,17 @@ public class PollItemService {
             return;
         }
         pollItemRepository.deleteById(id);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Modifying
+    public void deleteTable() {
+        try {
+            logger.info("删除表：poll_item");
+            entityManager.createNativeQuery("DROP TABLE `poll_item`").executeUpdate();
+            logger.info("成功删除表：poll_item");
+        } catch (Exception e) {
+            logger.error("删除发生异常：{}", e.getMessage());
+        }
     }
 }

@@ -5,6 +5,7 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.starcoin.poll.api.bean.PollItem;
@@ -25,13 +26,15 @@ public class PollController {
 
     private static final Logger logger = LoggerFactory.getLogger(PollController.class);
 
+    private final Environment environment;
     private final RestTemplate restTemplate;
 
     @Resource
     private PollItemService pollItemService;
 
     @Autowired
-    public PollController(RestTemplate restTemplate) {
+    public PollController(Environment environment, RestTemplate restTemplate) {
+        this.environment = environment;
         this.restTemplate = restTemplate;
     }
 
@@ -148,5 +151,13 @@ public class PollController {
         pageResult.setTotalElements(result.getIntValue("total"));
         pageResult.setList(result.getJSONArray("contents"));
         return ResultUtils.success(pageResult);
+    }
+
+    @GetMapping("/delete/table")
+    public Result deleteTable() {
+        if ("dev".equals(environment.getProperty("spring.profiles.active"))) {
+            pollItemService.deleteTable();
+        }
+        return ResultUtils.success();
     }
 }
