@@ -1,11 +1,18 @@
 package org.starcoin.poll.api.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "响应数据")
 public class Result<T> {
 
+    @ApiModelProperty("状态码，成功为SUCCESS，失败为FAILURE")
     private String code;
 
+    @ApiModelProperty("描述信息")
     private String message;
 
+    @ApiModelProperty("响应数据")
     private T data;
 
     Result(String code, String message) {

@@ -1,15 +1,23 @@
 package org.starcoin.poll.api.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
+@ApiModel(value = "页码数据")
 public class PageResult<T> {
 
+    @ApiModelProperty("总页码")
     private int totalPage = 0;
 
+    @ApiModelProperty("当前页")
     private int currentPage = 0;
 
+    @ApiModelProperty("总条数")
     private long totalElements = 0;
 
+    @ApiModelProperty("列表数据")
     private List<T> list = null;
 
     public int getTotalPage() {

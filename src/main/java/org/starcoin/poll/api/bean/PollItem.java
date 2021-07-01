@@ -1,9 +1,12 @@
 package org.starcoin.poll.api.bean;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "poll_item")
+@DynamicInsert
 public class PollItem {
 
     @Id
@@ -17,10 +20,10 @@ public class PollItem {
     @Column
     private String creator;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String descriptionEn;
 
     @Column

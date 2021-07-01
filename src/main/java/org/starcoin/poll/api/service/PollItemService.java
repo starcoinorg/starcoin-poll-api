@@ -24,7 +24,11 @@ public class PollItemService {
     }
 
     public boolean add(Integer againstVotes, String creator, String description, String descriptionEn, Long endTime, Integer forVotes, String link, String title, String titleEn, String typeArgs1, String status, String network) {
-        PollItem item = new PollItem();
+        PollItem item = getByTitleOrTitleEn(title, titleEn);
+        if (null != item) {
+            return false;
+        }
+        item = new PollItem();
         item.setAgainstVotes(againstVotes);
         item.setCreator(creator);
         item.setDescription(description);
@@ -45,9 +49,14 @@ public class PollItemService {
         return pollItemRepository.findById(id).orElse(null);
     }
 
+    public PollItem getByTitleOrTitleEn(String title, String titleEn) {
+        return pollItemRepository.findByTitleOrTitleEn(title, titleEn);
+    }
+
     public PageResult<PollItem> getListByNetwork(String network, int page, int size) {
         Page<PollItem> list = pollItemRepository.findByNetwork(network, PageRequest.of(page, size));
         PageResult<PollItem> result = new PageResult<>();
+        result.setCurrentPage(page);
         result.setTotalPage(list.getTotalPages());
         result.setTotalElements((int) list.getTotalElements());
         result.setList(list.getContent());
