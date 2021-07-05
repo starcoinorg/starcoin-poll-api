@@ -1,6 +1,8 @@
 package org.starcoin.poll.api.system;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.starcoin.poll.api.vo.ResultUtils;
 
@@ -12,6 +14,10 @@ import java.io.PrintWriter;
 @Component
 public class UrlFilter implements Filter {
 
+    private static final Logger logger = LoggerFactory.getLogger(Filter.class);
+
+    private final static String[] URI_NOT_FILTER = new String[]{"/v1/polls", "swagger", "v3/api-docs"};
+
     @Override
     public void init(FilterConfig filterConfig) {
     }
@@ -19,16 +25,25 @@ public class UrlFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String uri = ((HttpServletRequest) request).getRequestURI();
-        System.out.println(uri);
-        if ((uri.length() >= 9 && "/v1/polls".equals(uri.substring(0, 9))) || uri.contains("swagger") || uri.contains("v3/api-docs")) {
+        if (isFilter(uri)) {
             chain.doFilter(request, response);
         } else {
+            logger.info("拦截URI：{}", uri);
             doResponse(response);
         }
     }
 
     @Override
     public void destroy() {
+    }
+
+    private boolean isFilter(String uri) {
+        for (String str : URI_NOT_FILTER) {
+            if (uri.indexOf(str) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void doResponse(ServletResponse response) {

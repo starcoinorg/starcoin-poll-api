@@ -3,6 +3,7 @@ package org.starcoin.poll.api.bean;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "poll_item")
@@ -23,10 +24,10 @@ public class PollItem {
     @Column
     private String titleEn;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 5000)
     private String description;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 5000)
     private String descriptionEn;
 
     @Column(length = 70)
@@ -47,17 +48,17 @@ public class PollItem {
     @Column
     private Long endTime;
 
-    @Column(length = 2, scale = 2)
+    @Column
     private Integer status;
 
     @Column
-    private Long createdAt;
+    private Timestamp createdAt;
 
     @Column
-    private Long updatedAt;
+    private Timestamp updatedAt;
 
     @Column
-    private Long deletedAt;
+    private Timestamp deletedAt;
 
     public Long getId() {
         return id;
@@ -163,27 +164,27 @@ public class PollItem {
         this.status = status;
     }
 
-    public Long getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Long createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Long getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Long updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Long getDeletedAt() {
+    public Timestamp getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Long deletedAt) {
+    public void setDeletedAt(Timestamp deletedAt) {
         this.deletedAt = deletedAt;
     }
 }
