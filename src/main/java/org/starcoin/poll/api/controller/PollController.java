@@ -17,7 +17,6 @@ import org.starcoin.poll.api.vo.ResultUtils;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Api(tags = {"投票列表配置接口"}, description = "投票列表配置接口，包含管理服务API")
@@ -105,7 +104,8 @@ public class PollController {
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/add")
-    public Result addPollItem(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) throws UnsupportedEncodingException {
+    public Result addPollItem(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
+        logger.debug(new PollItem().toString());
         boolean result = pollItemService.add(againstVotes, creator, description, descriptionEn, endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
         if (result) {
             return ResultUtils.success();
@@ -131,7 +131,7 @@ public class PollController {
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/modif")
-    public Result modifPollItem(Long id, Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) throws UnsupportedEncodingException {
+    public Result modifPollItem(Long id, Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
         boolean result = pollItemService.modif(id, againstVotes, creator, description, descriptionEn, endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
         if (result) {
             return ResultUtils.success();

@@ -187,4 +187,26 @@ public class PollItem {
     public void setDeletedAt(Timestamp deletedAt) {
         this.deletedAt = deletedAt;
     }
+
+    @Override
+    public String toString() {
+        return "PollItem{" +
+                "id='" + id + '\'' +
+                ", network='" + network + '\'' +
+                ", title='" + title + '\'' +
+                ", titleEn=" + titleEn +
+                ", description='" + description + '\'' +
+                ", descriptionEn='" + descriptionEn + '\'' +
+                ", creator='" + creator + '\'' +
+                ", againstVotes='" + againstVotes + '\'' +
+                ", forVotes='" + forVotes + '\'' +
+                ", link='" + link + '\'' +
+                ", typeArgs1='" + typeArgs1 + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", status='" + status + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", deletedAt='" + deletedAt + '\'' +
+                '}';
+    }
 }
