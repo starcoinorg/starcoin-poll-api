@@ -105,7 +105,6 @@ public class PollController {
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/add")
     public Result addPollItem(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
-        logger.debug(new PollItem().toString());
         boolean result = pollItemService.add(againstVotes, creator, description, descriptionEn, endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
         if (result) {
             return ResultUtils.success();

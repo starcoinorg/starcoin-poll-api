@@ -3,7 +3,6 @@ package org.starcoin.poll.api.bean;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "poll_item")
@@ -52,13 +51,13 @@ public class PollItem {
     private Integer status;
 
     @Column
-    private Timestamp createdAt;
+    private Long createdAt;
 
     @Column
-    private Timestamp updatedAt;
+    private Long updatedAt;
 
     @Column
-    private Timestamp deletedAt;
+    private Long deletedAt;
 
     public Long getId() {
         return id;
@@ -164,27 +163,27 @@ public class PollItem {
         this.status = status;
     }
 
-    public Timestamp getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Timestamp getDeletedAt() {
+    public Long getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(Long deletedAt) {
         this.deletedAt = deletedAt;
     }
 

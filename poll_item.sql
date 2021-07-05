@@ -19,9 +19,9 @@ CREATE TABLE `poll_item`  (
   `description` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '中文说明',
   `description_en` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '英文说明',
   `status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '状态 1:pending,2:active,3:defeated,4:agreed,5:queued,6:executable,7:extracted',
-  `created_at` timestamp NULL DEFAULT NULL COMMENT '创建表时间',
-  `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新表时间',
-  `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除表时间',
+  `created_at` bigint(20) NULL DEFAULT NULL COMMENT '创建表时间',
+  `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新表时间',
+  `deleted_at` bigint(20) NULL DEFAULT NULL COMMENT '删除表时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 

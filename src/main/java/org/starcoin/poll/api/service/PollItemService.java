@@ -11,8 +11,6 @@ import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.dao.PollItemRepository;
 import org.starcoin.poll.api.vo.PageResult;
 
-import java.sql.Timestamp;
-
 @Service
 public class PollItemService {
 
@@ -44,8 +42,8 @@ public class PollItemService {
         item.setTypeArgs1(typeArgs1);
         item.setStatus(status);
         item.setNetwork(network);
-        item.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        item.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        item.setCreatedAt(System.currentTimeMillis());
+        item.setUpdatedAt(System.currentTimeMillis());
         pollItemRepository.save(item);
         return true;
     }
@@ -124,7 +122,7 @@ public class PollItemService {
             isUpdate = true;
         }
         if (isUpdate) {
-            item.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            item.setUpdatedAt(System.currentTimeMillis());
             pollItemRepository.saveAndFlush(item);
         }
         return isUpdate;
@@ -136,7 +134,7 @@ public class PollItemService {
         if (null == item) {
             return;
         }
-        item.setDeletedAt(new Timestamp(System.currentTimeMillis()));
+        item.setDeletedAt(System.currentTimeMillis());
         pollItemRepository.saveAndFlush(item);
     }
 }
