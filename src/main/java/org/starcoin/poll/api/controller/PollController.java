@@ -6,7 +6,6 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import org.starcoin.poll.api.bean.Event;
 import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.service.ContractService;
 import org.starcoin.poll.api.service.PollItemService;
@@ -157,10 +156,10 @@ public class PollController {
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @GetMapping("/votes/{network}/{proposalId}/{proposer}")
-    public Result<List<Event>> delPollItem(@PathVariable("network") String network,
-                                           @PathVariable("proposalId") Long proposalId,
-                                           @PathVariable("proposer") String proposer) throws IOException, DeserializationError {
-        List<Event> list = transactionService.getEventsByProposalIdAndProposer(network, proposalId, proposer);
+    public Result<List<JSONObject>> delPollItem(@PathVariable("network") String network,
+                                                @PathVariable("proposalId") Long proposalId,
+                                                @PathVariable("proposer") String proposer) throws IOException, DeserializationError {
+        List<JSONObject> list = transactionService.getEventsByProposalIdAndProposer(network, proposalId, proposer);
         return ResultUtils.success(list);
     }
 }

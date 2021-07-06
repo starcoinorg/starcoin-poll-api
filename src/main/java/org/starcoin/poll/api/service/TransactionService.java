@@ -1,6 +1,7 @@
 package org.starcoin.poll.api.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.novi.serde.DeserializationError;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.RequestOptions;
@@ -20,7 +21,8 @@ import org.starcoin.poll.api.constant.Constant;
 import org.starcoin.poll.api.utils.CommonUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -32,7 +34,7 @@ public class TransactionService {
         this.client = client;
     }
 
-    public List<Event> getEventsByProposalIdAndProposer(String network, Long proposalId, String proposer) throws IOException, DeserializationError {
+    public List<JSONObject> getEventsByProposalIdAndProposer(String network, Long proposalId, String proposer) throws IOException, DeserializationError {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         boolQuery.must(QueryBuilders.matchQuery("tag_name", "VoteChangedEvent"));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -44,11 +46,11 @@ public class TransactionService {
         searchRequest.scroll(scroll).source(searchSourceBuilder);
         SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
 
-        List<Event> result = new ArrayList<>();
+        List<JSONObject> result = new ArrayList<>();
         String scrollId = searchResponse.getScrollId();
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         while (searchHits != null && searchHits.length > 0) {
-            List<Event> tmp = getSearchResultFilter(searchResponse, proposalId, proposer);
+            List<JSONObject> tmp = getSearchResultFilter(searchResponse, proposalId, proposer);
             if (tmp.size() > 0) {
                 result.addAll(tmp);
             }
@@ -66,9 +68,9 @@ public class TransactionService {
         return result;
     }
 
-    private List<Event> getSearchResultFilter(SearchResponse searchResponse, Long proposalId, String proposerStr) throws DeserializationError {
+    private List<JSONObject> getSearchResultFilter(SearchResponse searchResponse, Long proposalId, String proposerStr) throws DeserializationError {
         SearchHit[] searchHit = searchResponse.getHits().getHits();
-        List<Event> transactions = new ArrayList<>();
+        List<JSONObject> transactions = new ArrayList<>();
         for (SearchHit hit : searchHit) {
             Event event = JSON.parseObject(hit.getSourceAsString(), Event.class);
 
@@ -77,10 +79,14 @@ public class TransactionService {
 
             byte[] proposerBytes = CommonUtils.hexToByteArray(proposerStr);
             AccountAddress proposer = AccountAddress.bcsDeserialize(proposerBytes);
-            if (data.proposal_id != proposalId || !data.proposer.equals(proposer)) {
+            if (!data.proposal_id.equals(proposalId) || !data.proposer.equals(proposer)) {
                 continue;
             }
-            transactions.add(event);
+            JSONObject item = new JSONObject();
+            item.put("event", event);
+            item.put("voteChangedEvent", data);
+            item.put("proposer", proposer);
+            transactions.add(item);
         }
         return transactions;
     }
