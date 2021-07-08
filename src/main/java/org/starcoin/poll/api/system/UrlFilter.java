@@ -16,7 +16,7 @@ public class UrlFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(Filter.class);
 
-    private final static String[] URI_NOT_FILTER = new String[]{"/v1/polls", "swagger", "v3/api-docs"};
+    private final static String[] URI_NOT_FILTER = new String[]{"/v1/polls", "/swagger", "/v3/api-docs", "/favicon.ico"};
 
     @Override
     public void init(FilterConfig filterConfig) {
