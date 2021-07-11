@@ -10,6 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Random;
+
 @Service
 public class ContractService {
 
@@ -26,7 +28,7 @@ public class ContractService {
 
     public int getPollStatus(long id, String creator, String typeArgs1) {
         JSONObject paramObject = new JSONObject();
-        paramObject.put("id", 101);
+        paramObject.put("id", System.currentTimeMillis() + new Random().nextInt(100));
         paramObject.put("jsonrpc", "2.0");
         paramObject.put("method", "contract.call");
         JSONObject paramItem = new JSONObject();
@@ -44,14 +46,14 @@ public class ContractService {
         paramObject.put("params", paramList);
         JSONObject result = post(paramObject);
         if (result.containsKey("error") && !(result.containsKey("result") && null != result.getJSONObject("result"))) {
-            return 0;
+            return 1;
         }
         return result.getJSONArray("result").getJSONObject(0).getIntValue("U8");
     }
 
     public JSONObject getPollVotes(String creator, String typeArgs1) {
         JSONObject paramObject = new JSONObject();
-        paramObject.put("id", 101);
+        paramObject.put("id", System.currentTimeMillis() + new Random().nextInt(100));
         paramObject.put("jsonrpc", "2.0");
         paramObject.put("method", "contract.get_resource");
         JSONArray paramList = new JSONArray();
