@@ -58,7 +58,7 @@ public class ContractService {
         paramObject.put("method", "contract.get_resource");
         JSONArray paramList = new JSONArray();
         paramList.add(creator);
-        paramList.add(typeArgs1);
+        paramList.add("0x1::Dao::Proposal<0x1::STC::STC," + typeArgs1 + ">");
         paramObject.put("params", paramList);
         JSONObject result = post(paramObject);
         JSONObject votesObject = new JSONObject();
