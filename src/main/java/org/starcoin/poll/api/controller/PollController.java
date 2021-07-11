@@ -45,9 +45,9 @@ public class PollController {
         if (null == item) {
             return ResultUtils.failure();
         }
-        int status = contractService.getPollStatus(item.getCreator(), item.getTypeArgs1());
+        int status = contractService.getPollStatus(item.getId(), item.getCreator(), item.getTypeArgs1());
         item.setStatus(status);
-        JSONObject votes = contractService.getPollVotes(item.getCreator());
+        JSONObject votes = contractService.getPollVotes(item.getCreator(), item.getTypeArgs1());
         if (votes.containsKey("for_votes")) {
             item.setForVotes(votes.getLongValue("for_votes"));
         }
@@ -72,9 +72,9 @@ public class PollController {
         PageResult<PollItem> pageResult = pollItemService.getListByNetwork(network, page - 1, count);
         List<PollItem> list = pageResult.getList();
         for (PollItem item : list) {
-            int status = contractService.getPollStatus(item.getCreator(), item.getTypeArgs1());
+            int status = contractService.getPollStatus(item.getId(), item.getCreator(), item.getTypeArgs1());
             item.setStatus(status);
-            JSONObject votes = contractService.getPollVotes(item.getCreator());
+            JSONObject votes = contractService.getPollVotes(item.getCreator(), item.getTypeArgs1());
             if (votes.containsKey("for_votes")) {
                 item.setForVotes(votes.getLongValue("for_votes"));
             }

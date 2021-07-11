@@ -24,7 +24,7 @@ public class ContractService {
         this.restTemplate = restTemplate;
     }
 
-    public int getPollStatus(String creator, String typeArgs1) {
+    public int getPollStatus(long id, String creator, String typeArgs1) {
         JSONObject paramObject = new JSONObject();
         paramObject.put("id", 101);
         paramObject.put("jsonrpc", "2.0");
@@ -37,30 +37,30 @@ public class ContractService {
         paramItem.put("type_args", typeArgs);
         JSONArray args = new JSONArray();
         args.add(creator);
-        args.add("1");
+        args.add(String.valueOf(id));
         paramItem.put("args", args);
         JSONArray paramList = new JSONArray();
         paramList.add(paramItem);
         paramObject.put("params", paramList);
         JSONObject result = post(paramObject);
-        if (result.containsKey("error")) {
+        if (result.containsKey("error") && !(result.containsKey("result") && null != result.getJSONObject("result"))) {
             return 0;
         }
         return result.getJSONArray("result").getJSONObject(0).getIntValue("U8");
     }
 
-    public JSONObject getPollVotes(String creator) {
+    public JSONObject getPollVotes(String creator, String typeArgs1) {
         JSONObject paramObject = new JSONObject();
         paramObject.put("id", 101);
         paramObject.put("jsonrpc", "2.0");
         paramObject.put("method", "contract.get_resource");
         JSONArray paramList = new JSONArray();
         paramList.add(creator);
-        paramList.add("0x1::Dao::Proposal<0x1::STC::STC,0x1::OnChainConfigDao::OnChainConfigUpdate<0x1::TransactionPublishOption::TransactionPublishOption>>");
+        paramList.add(typeArgs1);
         paramObject.put("params", paramList);
         JSONObject result = post(paramObject);
         JSONObject votesObject = new JSONObject();
-        if (!result.containsKey("error")) {
+        if (!result.containsKey("error") && (result.containsKey("result") && null != result.getJSONObject("result"))) {
             JSONArray valueArray = result.getJSONObject("result").getJSONArray("value");
             for (int i = 0; i < valueArray.size(); i++) {
                 JSONArray item = valueArray.getJSONArray(i);
