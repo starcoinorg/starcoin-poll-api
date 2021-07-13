@@ -43,4 +43,5 @@ spec:
               name: elasticsearch-pw-elastic
               key: password
         - name: POLL_API_PORT
-            value: 8603
+          value: "8603"
+
