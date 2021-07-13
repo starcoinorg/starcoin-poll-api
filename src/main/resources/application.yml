@@ -1,5 +1,5 @@
 server:
-  port: 8600
+  port: ${POLL_API_PORT:8600}
   max-http-header-size: 102400
 
 spring:

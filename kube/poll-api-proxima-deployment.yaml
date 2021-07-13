@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: poll-api-deployment
+  name: poll-api-proxima-deployment
   labels:
-    app: poll-api
+    app: poll-api-proxima
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: poll-api
+      app: poll-api-proxima
   template:
     metadata:
       labels:
-        app: poll-api
+        app: poll-api-proxima
     spec:
       containers:
-      - name: poll-api
+      - name: poll-api-proxima
         image: starcoin/starcoin_poll:sha-521dd8c
         ports:
-        - containerPort: 8600
+        - containerPort: 8603
         env:
         - name: STARCOIN_MYSQL_URL
-          value: "jdbc:mysql://starcoin-db-2.c0bz9kehdvnb.ap-northeast-1.rds.amazonaws.com:3306/poll?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC"
+          value: "jdbc:mysql://starcoin-db-2.c0bz9kehdvnb.ap-northeast-1.rds.amazonaws.com:3306/poll_proxima?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC"
         - name: STARCOIN_MYSQL_USER
           value: "starcoin"
         - name: STARCOIN_MYSQL_PWD
@@ -43,4 +43,4 @@ spec:
               name: elasticsearch-pw-elastic
               key: password
         - name: POLL_API_PORT
-            value: 8600
+            value: 8603
