@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: poll-api-barnard
+  name: poll-api-barnard
+spec:
+  ports:
+  - port: 80
+    name: http
+    protocol: TCP
+    targetPort: 8601
+  selector:
+    app: poll-api-barnard
+  type: LoadBalancer
+status:
+  loadBalancer: {}
