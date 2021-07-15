@@ -57,7 +57,7 @@ public class PollItemService {
     }
 
     public PageResult<PollItem> getListByNetwork(String network, int page, int size) {
-        Page<PollItem> list = pollItemRepository.findByNetworkAndDeletedAtIsNull(network, PageRequest.of(page, size));
+        Page<PollItem> list = pollItemRepository.findByNetworkAndDeletedAtIsNullOrderByIdDesc(network, PageRequest.of(page, size));
         PageResult<PollItem> result = new PageResult<>();
         result.setCurrentPage(page);
         result.setTotalPage(list.getTotalPages());
