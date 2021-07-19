@@ -5,17 +5,31 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "poll_item")
+@Table(name = "poll_item", uniqueConstraints = {
+        @UniqueConstraint(name = "uniq_network_id_on_chain", columnNames = {"network", "id_on_chain"})
+})
 @DynamicInsert
 public class PollItem {
 
+    /**
+     * 代理 Id
+     */
     @Id
     @Column(nullable = false, unique = true)
     @GeneratedValue
     private Long id;
 
+    /**
+     * 让 network 以及 idOnChain 组成领域键。
+     */
     @Column(length = 20)
     private String network;
+
+    /**
+     * 让 network 以及 idOnChain 组成领域键。
+     */
+    @Column(name = "id_on_chain", length = 100)
+    private String idOnChain;
 
     @Column
     private String title;
@@ -73,6 +87,14 @@ public class PollItem {
 
     public void setNetwork(String network) {
         this.network = network;
+    }
+
+    public String getIdOnChain() {
+        return idOnChain;
+    }
+
+    public void setIdOnChain(String idOnChain) {
+        this.idOnChain = idOnChain;
     }
 
     public String getTitle() {
