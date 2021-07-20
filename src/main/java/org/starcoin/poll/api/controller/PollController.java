@@ -99,12 +99,16 @@ public class PollController {
             @ApiImplicitParam(name = "titleEn", value = "英文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "typeArgs1", value = "", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "status", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class)
+            @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "idOnChain", value = "Id on Chain", required = true, dataType = "String", dataTypeClass = String.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/add")
-    public Result addPollItem(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
-        boolean result = pollItemService.add(againstVotes, creator, description, descriptionEn, endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
+    public Result addPollItem(Long againstVotes, String creator, String description, String descriptionEn, Long endTime,
+                              Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status,
+                              String network, String idOnChain) {
+        boolean result = pollItemService.add(againstVotes, creator, description, descriptionEn, endTime, forVotes,
+                link, title, titleEn, typeArgs1, status, network, idOnChain);
         if (result) {
             return ResultUtils.success();
         }
@@ -124,13 +128,18 @@ public class PollController {
             @ApiImplicitParam(name = "title", value = "中文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "titleEn", value = "英文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "typeArgs1", value = "", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "status", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class)
+            @ApiImplicitParam(name = "status", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class) //,
+            //@ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/modif")
-    public Result modifPollItem(Long id, Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
-        boolean result = pollItemService.modif(id, againstVotes, creator, description, descriptionEn, endTime, forVotes, link, title, titleEn, typeArgs1, status, network);
+    public Result modifPollItem(Long id, Long againstVotes, String creator, String description, String descriptionEn,
+                                Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1,
+                                Integer status
+                                //, String network // 领域键（实体Id）应该也是不能修改的
+    ) {
+        boolean result = pollItemService.modif(id, againstVotes, creator, description, descriptionEn, endTime, forVotes,
+                link, title, titleEn, typeArgs1, status);//, network);
         if (result) {
             return ResultUtils.success();
         }

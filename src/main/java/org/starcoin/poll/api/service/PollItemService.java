@@ -24,7 +24,9 @@ public class PollItemService {
     }
 
     @Transactional
-    public boolean add(Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
+    public boolean add(Long againstVotes, String creator, String description, String descriptionEn, Long endTime,
+                       Long forVotes, String link, String title, String titleEn, String typeArgs1,
+                       Integer status, String network, String idOnChain) {
         PollItem item = getByTitleOrTitleEn(title, titleEn);
         if (null != item) {
             return false;
@@ -44,6 +46,7 @@ public class PollItemService {
         item.setNetwork(network);
         item.setCreatedAt(System.currentTimeMillis());
         item.setUpdatedAt(System.currentTimeMillis());
+        item.setIdOnChain(idOnChain);
         pollItemRepository.save(item);
         return true;
     }
@@ -67,7 +70,10 @@ public class PollItemService {
     }
 
     @Transactional
-    public boolean modif(Long id, Long againstVotes, String creator, String description, String descriptionEn, Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1, Integer status, String network) {
+    public boolean modif(Long id, Long againstVotes, String creator, String description, String descriptionEn,
+                         Long endTime, Long forVotes, String link, String title, String titleEn, String typeArgs1,
+                         Integer status//, String network
+    ) {
         PollItem item = get(id);
         if (null == item) {
             return false;
@@ -117,10 +123,10 @@ public class PollItemService {
             item.setStatus(status);
             isUpdate = true;
         }
-        if (null != network && network.length() > 0) {
-            item.setNetwork(network);
-            isUpdate = true;
-        }
+//        if (null != network && network.length() > 0) {
+//            item.setNetwork(network);
+//            isUpdate = true;
+//        }
         if (isUpdate) {
             item.setUpdatedAt(System.currentTimeMillis());
             pollItemRepository.saveAndFlush(item);
