@@ -212,22 +212,23 @@ public class PollItem {
     @Override
     public String toString() {
         return "PollItem{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", network='" + network + '\'' +
+                ", idOnChain='" + idOnChain + '\'' +
                 ", title='" + title + '\'' +
-                ", titleEn=" + titleEn +
+                ", titleEn='" + titleEn + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionEn='" + descriptionEn + '\'' +
                 ", creator='" + creator + '\'' +
-                ", againstVotes='" + againstVotes + '\'' +
-                ", forVotes='" + forVotes + '\'' +
+                ", againstVotes=" + againstVotes +
+                ", forVotes=" + forVotes +
                 ", link='" + link + '\'' +
                 ", typeArgs1='" + typeArgs1 + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", status='" + status + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", deletedAt='" + deletedAt + '\'' +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 }

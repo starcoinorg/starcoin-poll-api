@@ -42,6 +42,17 @@ spec:
             secretKeyRef:
               name: elasticsearch-pw-elastic
               key: password
+        - name: ALERT_MAIL_TO
+          value: "todo: mail to somebodies"
+        - name: MAIL_SMTP_HOST
+          value: "todo: smtp server"
+        - name: MAIL_SENDER_USERNAME
+          value: "todo: sender username"
+        - name: MAIL_SENDER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: poll-alter-mail-pw # todo: create a secret
+              key: password
         - name: POLL_API_PORT
           value: "8600"
 
