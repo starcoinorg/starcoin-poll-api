@@ -20,6 +20,8 @@ spec:
         ports:
         - containerPort: 8600
         env:
+        - name: spring_profiles_active
+          value: prod
         - name: STARCOIN_MYSQL_URL
           value: "jdbc:mysql://starcoin-db-2.c0bz9kehdvnb.ap-northeast-1.rds.amazonaws.com:3306/poll?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC"
         - name: STARCOIN_MYSQL_USER
@@ -43,15 +45,21 @@ spec:
               name: elasticsearch-pw-elastic
               key: password
         - name: ALERT_MAIL_TO
-          value: "todo: mail to somebodies"
+          value: "jolestar@gmail.com,wk3368@163.com"
         - name: MAIL_SMTP_HOST
-          value: "todo: smtp server"
+          valueFrom:
+            secretKeyRef:
+              name: poll-alter-mail-secret
+              key: smtphost
         - name: MAIL_SENDER_USERNAME
-          value: "todo: sender username"
+          valueFrom:
+            secretKeyRef:
+              name: poll-alter-mail-secret
+              key: username
         - name: MAIL_SENDER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: poll-alter-mail-pw # todo: create a secret
+              name: poll-alter-mail-secret
               key: password
         - name: POLL_API_PORT
           value: "8600"

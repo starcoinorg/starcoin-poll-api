@@ -8,4 +8,4 @@ spring:
 alert:
   mail:
     to: ${ALERT_MAIL_TO}
-    subject-prefix: "Test: "
+    subject-prefix: ""

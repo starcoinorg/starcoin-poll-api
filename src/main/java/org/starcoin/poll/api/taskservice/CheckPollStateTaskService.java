@@ -32,6 +32,9 @@ public class CheckPollStateTaskService {
     @Value("${alert.mail.to}")
     private String alertMailTo;
 
+    @Value("${alert.mail.subject-prefix}")
+    private String mailSubjectPrefix;
+
     @Autowired
     private PollItemRepository pollItemRepository;
 
@@ -60,7 +63,7 @@ public class CheckPollStateTaskService {
             if (isPollAboutToEnd(endTimeMills) && yesVotes.compareTo(quorumVotes) < 0) {
                 LOG.info("Poll is about to end! Id(onChain): " + pollItem.getIdOnChain());
                 mailService.sendMail(
-                        "Poll is abount to end! #" + pollItem.getIdOnChain(),
+                        mailSubjectPrefix + "Poll is about to end! #" + pollItem.getIdOnChain(),
                         "Yes votes: " + yesVotes + ". It did NOT reach quorum votes: " + quorumVotes,
                         Arrays.asList(alertMailTo.split(",")));
             }

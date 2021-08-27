@@ -3,8 +3,6 @@ server:
   max-http-header-size: 102400
 
 spring:
-  profiles:
-    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${STARCOIN_MYSQL_URL}
@@ -44,6 +42,7 @@ spring:
 alert:
   mail:
     to: ${ALERT_MAIL_TO}
+    subject-prefix: ""
 
 jasypt:
   encryptor:

@@ -42,6 +42,23 @@ spec:
             secretKeyRef:
               name: elasticsearch-pw-elastic
               key: password
+        - name: ALERT_MAIL_TO
+          value: "jolestar@gmail.com,wk3368@163.com"
+        - name: MAIL_SMTP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: poll-alter-mail-secret
+              key: smtphost
+        - name: MAIL_SENDER_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: poll-alter-mail-secret
+              key: username
+        - name: MAIL_SENDER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: poll-alter-mail-secret
+              key: password
         - name: POLL_API_PORT
           value: "8603"
 
