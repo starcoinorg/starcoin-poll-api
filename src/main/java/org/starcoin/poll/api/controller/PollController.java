@@ -54,6 +54,11 @@ public class PollController {
         if (votes.containsKey("against_votes")) {
             item.setAgainstVotes(votes.getLongValue("against_votes"));
         }
+        try {
+            pollItemService.updateStatus(id, status);
+        } catch (RuntimeException e) {
+            logger.error("Update poll status error.", e);
+        }
         return ResultUtils.success(item);
     }
 

@@ -143,4 +143,14 @@ public class PollItemService {
         item.setDeletedAt(System.currentTimeMillis());
         pollItemRepository.saveAndFlush(item);
     }
+
+    @Transactional
+    public void updateStatus(Long id, int status) {
+        PollItem pollItem = pollItemRepository.findById(id).orElse(null);
+        if (pollItem == null) {
+            return;
+        }
+        pollItem.setStatus(status);
+        pollItemRepository.save(pollItem);
+    }
 }

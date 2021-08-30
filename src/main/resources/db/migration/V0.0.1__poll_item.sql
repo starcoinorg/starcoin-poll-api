@@ -25,4 +25,9 @@ CREATE TABLE `poll_item`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
+create table hibernate_sequence (next_val bigint) engine=InnoDB;
+
+insert into hibernate_sequence values ( 1 );
+
+
 SET FOREIGN_KEY_CHECKS = 1;

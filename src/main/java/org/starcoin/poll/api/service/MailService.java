@@ -26,7 +26,7 @@ public class MailService {
         this.from = from;
     }
 
-    public void templateMailAndSend(String template, String subject, Map<String, Object> params, List<String> to) throws MessagingException {
+    public void processMailAndSend(String template, String subject, Map<String, Object> params, List<String> to) throws MessagingException {
         if (true) {
             throw new UnsupportedOperationException();
         }
@@ -44,13 +44,13 @@ public class MailService {
         this.mailSender.send(mimeMessage);
     }
 
-    public void sendMail(String subject, String content, List<String> to) {
+    public void sendMail(String subject, String text, List<String> to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(this.from);
         String[] receiverArray = new String[to.size()];
         message.setTo(to.toArray(receiverArray));
         message.setSubject(subject);
-        message.setText(content);
+        message.setText(text);
         try {
             this.mailSender.send(message);
         } catch (MailException e) {

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.dao.PollItemRepository;
 import org.starcoin.poll.api.service.ContractService;
+import org.starcoin.poll.api.service.FeishuWebhookService;
 import org.starcoin.poll.api.service.MailService;
 import org.starcoin.poll.api.system.MailConfiguration;
 
@@ -44,6 +45,9 @@ public class CheckPollStateTaskService {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private FeishuWebhookService feishuWebhookService;
+
     @Scheduled(fixedDelay = 1000 * 60 * 60) // 每小时检查一次？
     @SuppressWarnings("unchecked")
     public void task() {
@@ -62,10 +66,10 @@ public class CheckPollStateTaskService {
             Long endTimeMills = Long.parseLong((String) getValueInResultMap(resultMap, "end_time", "U64"));
             if (isPollAboutToEnd(endTimeMills) && yesVotes.compareTo(quorumVotes) < 0) {
                 LOG.info("Poll is about to end! Id(onChain): " + pollItem.getIdOnChain());
-                mailService.sendMail(
-                        mailSubjectPrefix + "Poll is about to end! #" + pollItem.getIdOnChain(),
-                        "Yes votes: " + yesVotes + ". It did NOT reach quorum votes: " + quorumVotes,
-                        Arrays.asList(alertMailTo.split(",")));
+                String subject = mailSubjectPrefix + "Poll is about to end! #" + pollItem.getIdOnChain();
+                String content = "Yes votes: " + yesVotes + ". It did NOT reach quorum votes: " + quorumVotes;
+                mailService.sendMail(subject, content, Arrays.asList(alertMailTo.split(",")));
+                feishuWebhookService.post(subject, content);
             }
         });
     }

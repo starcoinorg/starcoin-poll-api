@@ -58,6 +58,9 @@ elasticsearch:
   socketTimeout: 10000
   connectionRequestTimeout: 2000
 
+feishu:
+  webhook-url: ${FEISHU_WEBHOOK_URL}
+
 logging:
   level:
     org:
