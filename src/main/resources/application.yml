@@ -3,8 +3,6 @@ server:
   max-http-header-size: 102400
 
 spring:
-  profiles:
-    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${STARCOIN_MYSQL_URL}
@@ -34,7 +32,18 @@ spring:
     # 需要 flyway 管控的 schema list，缺省的使用 dbsource.connection 直连上的那个 schema，
     # 可以指定多个schema，但仅会在第一个 schema 下建立 metadata 表，也仅在第一个 schema 应用 migration sql 脚本，
     # 但 flyway clean 命令会依次在这些 schema 下都执行一遍。
-    
+
+  mail:
+    enable: true
+    host: ${MAIL_SMTP_HOST}
+    username: ${MAIL_SENDER_USERNAME}
+    password: ${MAIL_SENDER_PASSWORD}
+
+alert:
+  mail:
+    to: ${ALERT_MAIL_TO}
+    subject-prefix: ""
+
 jasypt:
   encryptor:
     bean: encryptorBean
@@ -48,6 +57,9 @@ elasticsearch:
   connTimeout: 10000
   socketTimeout: 10000
   connectionRequestTimeout: 2000
+
+feishu:
+  webhook-url: ${FEISHU_WEBHOOK_URL}
 
 logging:
   level:

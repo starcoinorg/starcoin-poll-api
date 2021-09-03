@@ -1,0 +1,11 @@
+spring:
+  mail:
+    enable: true
+    host: ${MAIL_SMTP_HOST}
+    username: ${MAIL_SENDER_USERNAME}
+    password: ${MAIL_SENDER_PASSWORD}
+
+alert:
+  mail:
+    to: ${ALERT_MAIL_TO}
+    subject-prefix: ""

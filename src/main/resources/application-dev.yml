@@ -1,0 +1,26 @@
+spring:
+  mail:
+    enable: true
+    host: ${MAIL_SMTP_HOST}
+    username: ${MAIL_SENDER_USERNAME}
+    password: ${MAIL_SENDER_PASSWORD}
+
+alert:
+  mail:
+    to: ${ALERT_MAIL_TO}
+    subject-prefix: "Test: "
+
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+
+      # 输出数据库模型（开发阶段）
+      hibernate:
+        tool:
+          hbm2ddl: DEBUG
+
