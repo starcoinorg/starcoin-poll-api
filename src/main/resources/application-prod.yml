@@ -9,3 +9,6 @@ alert:
   mail:
     to: ${ALERT_MAIL_TO}
     subject-prefix: ""
+
+starcoin:
+  json-rpc-url: https://main-seed.starcoin.org

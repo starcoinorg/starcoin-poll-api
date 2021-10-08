@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: poll-api
-        image: starcoin/starcoin_poll:sha-521dd8c
+        image: starcoin/starcoin_poll:sha-d9420ab
         ports:
         - containerPort: 8600
         env:
@@ -49,17 +49,17 @@ spec:
         - name: MAIL_SMTP_HOST
           valueFrom:
             secretKeyRef:
-              name: poll-alter-mail-secret
+              name: poll-alert-mail-secret
               key: smtphost
         - name: MAIL_SENDER_USERNAME
           valueFrom:
             secretKeyRef:
-              name: poll-alter-mail-secret
+              name: poll-alert-mail-secret
               key: username
         - name: MAIL_SENDER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: poll-alter-mail-secret
+              name: poll-alert-mail-secret
               key: password
         - name: FEISHU_WEBHOOK_URL
           valueFrom:

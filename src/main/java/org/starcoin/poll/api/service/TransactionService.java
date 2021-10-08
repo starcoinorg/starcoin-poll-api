@@ -40,7 +40,6 @@ public class TransactionService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQuery);
         searchSourceBuilder.size(50);
-
         SearchRequest searchRequest = new SearchRequest(ServiceUtils.getIndex(network, Constant.TRANSACTION_EVENT_INDEX));
         Scroll scroll = new Scroll(TimeValue.timeValueMinutes(10L));
         searchRequest.scroll(scroll).source(searchSourceBuilder);
@@ -79,7 +78,7 @@ public class TransactionService {
 
             byte[] proposerBytes = CommonUtils.hexToByteArray(proposerStr);
             AccountAddress proposer = AccountAddress.bcsDeserialize(proposerBytes);
-            if (!data.proposal_id.equals(proposalId) || !data.proposer.equals(proposer)) {
+            if (!data.proposal_id.equals(proposalId) || !CommonUtils.byteListToHexWithPrefix(data.proposer.value).equalsIgnoreCase(proposerStr)) {//!data.proposer.equals(proposer)) {
                 continue;
             }
             JSONObject item = new JSONObject();

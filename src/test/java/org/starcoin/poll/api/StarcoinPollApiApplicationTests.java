@@ -1,10 +1,16 @@
 package org.starcoin.poll.api;
 
+import com.alibaba.fastjson.JSONObject;
+import com.novi.serde.DeserializationError;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.starcoin.poll.api.service.FeishuWebhookService;
 import org.starcoin.poll.api.service.PollItemService;
+import org.starcoin.poll.api.service.TransactionService;
+
+import java.io.IOException;
+import java.util.List;
 
 @SpringBootTest
 class StarcoinPollApiApplicationTests {
@@ -15,8 +21,22 @@ class StarcoinPollApiApplicationTests {
     @Autowired
     FeishuWebhookService feishuWebhookService;
 
+    @Autowired
+    TransactionService transactionService;
+
     @Test
     void contextLoads() {
+        try {
+            String indexPrefix = "main"; // "main.0727"
+            List<JSONObject> jsonObjectList = transactionService.getEventsByProposalIdAndProposer(indexPrefix, 0L, "0xb2aa52f94db4516c5beecef363af850a");
+            System.out.println(jsonObjectList);
+            System.out.println("result size: " + jsonObjectList.size());
+            System.out.println(jsonObjectList.stream().map(j -> j.getJSONObject("voteChangedEvent").getBigDecimal("vote")).reduce((j1, j2) -> j1.add(j2)));
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        } catch (DeserializationError deserializationError) {
+            deserializationError.printStackTrace();
+        }
 //        String idOnChain = "1";
 //        pollItemService.add(0L, "tester", "test", "test", System.currentTimeMillis(),
 //                0L, "http://test.com/test/poll/1", "test", "test", "0x11::Test:Test",
