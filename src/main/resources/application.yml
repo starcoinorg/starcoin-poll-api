@@ -58,6 +58,9 @@ elasticsearch:
   socketTimeout: 10000
   connectionRequestTimeout: 2000
 
+starcoin:
+  json-rpc-url: ${STARCOIN_JSON_RPC_URL}
+
 feishu:
   webhook-url: ${FEISHU_WEBHOOK_URL}
 
@@ -68,3 +71,14 @@ logging:
         web:
           filter:
             CommonsRequestLoggingFilter: DEBUG
+
+springfox:
+  documentation:
+    swaggerUi:
+      baseUrl: /poll-api-doc
+    openApi:
+      v3:
+        path: /poll-api-doc/v3/api-docs
+    swagger:
+      v2:
+        path: /poll-api-doc/v2/api-docs

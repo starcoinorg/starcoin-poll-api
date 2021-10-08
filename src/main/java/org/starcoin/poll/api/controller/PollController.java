@@ -45,20 +45,7 @@ public class PollController {
         if (null == item) {
             return ResultUtils.failure();
         }
-        int status = contractService.getPollStatus(item.getIdOnChain(), item.getCreator(), item.getTypeArgs1());
-        item.setStatus(status);
-        JSONObject votes = contractService.getPollVotes(item.getCreator(), item.getTypeArgs1());
-        if (votes.containsKey("for_votes")) {
-            item.setForVotes(votes.getLongValue("for_votes"));
-        }
-        if (votes.containsKey("against_votes")) {
-            item.setAgainstVotes(votes.getLongValue("against_votes"));
-        }
-        try {
-            pollItemService.updateStatus(id, status);
-        } catch (RuntimeException e) {
-            logger.error("Update poll status error.", e);
-        }
+        updateByOnChainInfo(item, id);
         return ResultUtils.success(item);
     }
 
@@ -77,23 +64,36 @@ public class PollController {
         PageResult<PollItem> pageResult = pollItemService.getListByNetwork(network, page - 1, count);
         List<PollItem> list = pageResult.getList();
         for (PollItem item : list) {
-            int status = contractService.getPollStatus(item.getIdOnChain(), item.getCreator(), item.getTypeArgs1());
-            item.setStatus(status);
-            JSONObject votes = contractService.getPollVotes(item.getCreator(), item.getTypeArgs1());
-            if (votes.containsKey("for_votes")) {
-                item.setForVotes(votes.getLongValue("for_votes"));
-            }
-            if (votes.containsKey("against_votes")) {
-                item.setAgainstVotes(votes.getLongValue("against_votes"));
-            }
-            try {
-                pollItemService.updateStatus(item.getId(), status);
-            } catch (RuntimeException e) {
-                logger.error("Update poll status error.", e);
-            }
+            updateByOnChainInfo(item, item.getId());
         }
         pageResult.setList(list);
         return ResultUtils.success(pageResult);
+    }
+
+    private void updateByOnChainInfo(PollItem item, Long id) {
+        int status = contractService.getPollStatus(item.getIdOnChain(), item.getCreator(), item.getTypeArgs1());
+        item.setStatus(status);
+        JSONObject pollObj = contractService.getPollVotes(item.getCreator(), item.getTypeArgs1());
+        if (pollObj.containsKey("for_votes")) {
+            item.setForVotes(pollObj.getLongValue("for_votes"));
+        }
+        if (pollObj.containsKey("against_votes")) {
+            item.setAgainstVotes(pollObj.getLongValue("against_votes"));
+        }
+        if (pollObj.containsKey("quorum_votes")) {
+            item.setQuorumVotes(pollObj.getLongValue("quorum_votes"));
+        }
+        if (pollObj.containsKey("start_time")) {
+            item.setOnChainStartTime(pollObj.getLongValue("start_time"));
+        }
+        if (pollObj.containsKey("end_time")) {
+            item.setOnChainEndTime(pollObj.getLongValue("end_time"));
+        }
+        try {
+            pollItemService.updateStatus(id, status);
+        } catch (RuntimeException e) {
+            logger.error("Update poll status error.", e);
+        }
     }
 
     @ApiOperation(value = "添加配置信息")

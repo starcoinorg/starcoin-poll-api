@@ -12,6 +12,4 @@ spec:
     targetPort: 8600
   selector:
     app: poll-api
-  type: LoadBalancer
-status:
-  loadBalancer: {}
+  type: ClusterIP

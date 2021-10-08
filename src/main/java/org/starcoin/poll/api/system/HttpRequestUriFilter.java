@@ -14,7 +14,7 @@ public class HttpRequestUriFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(HttpRequestUriFilter.class);
 
-    private final static String[] ALLOWED_PATHS = new String[]{"/v1/polls", "/swagger", "/v3/api-docs", "/favicon.ico"};
+    private final static String[] ALLOWED_PATHS = new String[]{"/v1/polls", "/poll-api-doc", "/swagger", "/v3/api-docs", "/favicon.ico"};
 
     @Override
     public void init(FilterConfig filterConfig) {
