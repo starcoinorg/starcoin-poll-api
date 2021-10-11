@@ -39,6 +39,10 @@ spring:
     username: ${MAIL_SENDER_USERNAME}
     password: ${MAIL_SENDER_PASSWORD}
 
+  security:
+    htpasswd: ${SPRING_SECURITY_HTPASSWD}
+
+
 alert:
   mail:
     to: ${ALERT_MAIL_TO}

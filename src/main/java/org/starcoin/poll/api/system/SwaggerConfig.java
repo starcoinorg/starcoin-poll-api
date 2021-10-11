@@ -21,6 +21,6 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("投票服务接口文档").description("投票服务接口，包含管理服务API和前端API").version("1.0.0").build();
+        return new ApiInfoBuilder().title("投票 API 文档").description("投票 API 文档，含投票管理接口").version("1.0.0").build();
     }
 }

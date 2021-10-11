@@ -17,8 +17,9 @@ import org.starcoin.poll.api.vo.ResultUtils;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
-@Api(tags = {"投票列表配置接口"}, description = "投票列表配置接口，包含管理服务API")
+@Api(tags = {"投票 API"})
 @RestController
 @RequestMapping("v1/polls")
 public class PollController {
@@ -51,9 +52,9 @@ public class PollController {
 
     @ApiOperation(value = "获取配置列表信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "network", value = "网络参数", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "page", value = "页码，默认第1页", required = true, dataType = "Integer", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "count", value = "条数，默认为20条", dataType = "Integer", dataTypeClass = Integer.class)
+            @ApiImplicitParam(name = "count", value = "每页记录条数，默认为 20 条", dataType = "Integer", dataTypeClass = Integer.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @GetMapping("/page/{network}")
@@ -71,8 +72,17 @@ public class PollController {
     }
 
     private void updateByOnChainInfo(PollItem item, Long id) {
-        int status = contractService.getPollStatus(item.getIdOnChain(), item.getCreator(), item.getTypeArgs1());
+        Integer status = contractService.getPollStatus(item.getIdOnChain(), item.getCreator(), item.getTypeArgs1());
+        Integer oldStatus = item.getStatus();
         item.setStatus(status);
+        try {
+            if (!Objects.equals(oldStatus, status)) {
+                pollItemService.asyncUpdateStatus(id, status);
+            }
+        } catch (RuntimeException e) {
+            logger.error("Update poll status error.", e);
+        }
+
         JSONObject pollObj = contractService.getPollVotes(item.getCreator(), item.getTypeArgs1());
         if (pollObj.containsKey("for_votes")) {
             item.setForVotes(pollObj.getLongValue("for_votes"));
@@ -89,28 +99,23 @@ public class PollController {
         if (pollObj.containsKey("end_time")) {
             item.setOnChainEndTime(pollObj.getLongValue("end_time"));
         }
-        try {
-            pollItemService.updateStatus(id, status);
-        } catch (RuntimeException e) {
-            logger.error("Update poll status error.", e);
-        }
     }
 
     @ApiOperation(value = "添加配置信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "againstVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "creator", value = "", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "description", value = "中文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "descriptionEn", value = "英文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "description", value = "中文说明，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "descriptionEn", value = "英文说明，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "endTime", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "forVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "link", value = "", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "title", value = "中文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "titleEn", value = "英文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "title", value = "中文标题，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "titleEn", value = "英文标题，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "typeArgs1", value = "", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "status", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class),
             @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "idOnChain", value = "Id on Chain", required = true, dataType = "String", dataTypeClass = String.class)
+            @ApiImplicitParam(name = "idOnChain", value = "On-Chain proposal Id.", required = true, dataType = "String", dataTypeClass = String.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
     @PostMapping("/add")
@@ -130,13 +135,13 @@ public class PollController {
             @ApiImplicitParam(name = "id", value = "主键ID", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "againstVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "creator", value = "", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "description", value = "中文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "descriptionEn", value = "英文说明，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "description", value = "中文说明，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "descriptionEn", value = "英文说明，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "endTime", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "forVotes", value = "", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "link", value = "", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "title", value = "中文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "titleEn", value = "英文标题，前端js需用encodeURIComponent包装下", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "title", value = "中文标题，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "titleEn", value = "英文标题，注意可能需要 encodeURIComponent", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "typeArgs1", value = "", required = true, dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "status", value = "", required = true, dataType = "Integer", dataTypeClass = Integer.class) //,
             //@ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class)
@@ -156,21 +161,21 @@ public class PollController {
         return ResultUtils.failure();
     }
 
-    @ApiOperation(value = "删除配置信息")
+    @ApiOperation(value = "删除投票配置信息（软删除）")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键ID", required = true, dataType = "Long", dataTypeClass = Long.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)
-    @GetMapping("/del/{id}")
+    @PostMapping("/del/{id}")
     public Result delPollItem(@PathVariable("id") Long id) {
         pollItemService.del(id);
         return ResultUtils.success();
     }
 
-    @ApiOperation(value = "获取指定poll的详情列表数据")
+    @ApiOperation(value = "获取指定的投票事件列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "network", value = "网络参数", required = true, dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "proposalId", value = "proposalId", required = true, dataType = "Long", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "network", value = "网络", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "proposalId", value = "proposal Id", required = true, dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "proposer", value = "proposer", required = true, dataType = "String", dataTypeClass = String.class)
     })
     @ApiResponse(code = 200, message = "SUCCESS", response = Result.class)

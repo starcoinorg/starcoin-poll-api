@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.starcoin.poll.api.bean.PollItem;
@@ -144,13 +145,17 @@ public class PollItemService {
         pollItemRepository.saveAndFlush(item);
     }
 
-    @Transactional
-    public void updateStatus(Long id, int status) {
+    @Async
+    public void asyncUpdateStatus(Long id, int status) {
         PollItem pollItem = pollItemRepository.findById(id).orElse(null);
         if (pollItem == null) {
             return;
         }
         pollItem.setStatus(status);
-        pollItemRepository.save(pollItem);
+        pollItem.setUpdatedAt(System.currentTimeMillis());
+        pollItemRepository.saveAndFlush(pollItem);
+        if (logger.isDebugEnabled()) {
+            logger.debug(Thread.currentThread().getName() + " updated item(Id:" + id + ") status to " + status);
+        }
     }
 }
