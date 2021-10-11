@@ -16,12 +16,17 @@ spec:
     spec:
       containers:
       - name: poll-api
-        image: starcoin/starcoin_poll:sha-d9420ab
+        image: starcoin/starcoin_poll:sha-a9edd51
         ports:
         - containerPort: 8600
         env:
         - name: spring_profiles_active
           value: prod
+        - name: SPRING_SECURITY_HTPASSWD
+          valueFrom:
+            secretKeyRef:
+              name: http-basic-auth
+              key: auth
         - name: STARCOIN_MYSQL_URL
           value: "jdbc:mysql://starcoin-db-2.c0bz9kehdvnb.ap-northeast-1.rds.amazonaws.com:3306/poll?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC"
         - name: STARCOIN_MYSQL_USER

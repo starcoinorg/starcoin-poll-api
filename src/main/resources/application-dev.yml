@@ -5,6 +5,7 @@ spring:
     username: ${MAIL_SENDER_USERNAME}
     password: ${MAIL_SENDER_PASSWORD}
 
+
 alert:
   mail:
     to: ${ALERT_MAIL_TO}
@@ -14,6 +15,11 @@ alert:
 logging:
   level:
     org:
+      starcoin:
+        poll:
+          api:
+            service: DEBUG
+
       springframework:
         web:
           filter:
