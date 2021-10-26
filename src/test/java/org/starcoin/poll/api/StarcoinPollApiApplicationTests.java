@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.starcoin.poll.api.service.PollItemService;
 import org.starcoin.poll.api.service.TransactionService;
+import org.starcoin.poll.api.service.WebhookService;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,14 +18,16 @@ class StarcoinPollApiApplicationTests {
     @Autowired
     PollItemService pollItemService;
 
-//    @Autowired
-//    WebhookService feishuWebhookService;
+    @Autowired
+    WebhookService webhookService;
 
     @Autowired
     TransactionService transactionService;
 
     @Test
     void contextLoads() {
+//        webhookService.post("Poll is about to end! Id(onChain): 7", "vote!");
+//        if (true) return;
         try {
             String indexPrefix = "main"; // "main.0727"
             List<JSONObject> jsonObjectList = transactionService.getEventsByProposalIdAndProposer(indexPrefix, 0L, "0xb2aa52f94db4516c5beecef363af850a");

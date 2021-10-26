@@ -68,6 +68,16 @@ starcoin:
 discord:
   webhook-url: ${DISCORD_WEBHOOK_URL}
 
+
+ok:
+  http:
+    connect-timeout: 3
+    max-idle-connections: 20
+    read-timeout: 6
+    write-timeout: 6
+    keep-alive-duration: 300
+
+
 logging:
   level:
     org:
