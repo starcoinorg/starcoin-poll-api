@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: poll-api-barnard
-        image: starcoin/starcoin_poll:sha-d9420ab
+        image: starcoin/starcoin_poll:sha-089beb3
         ports:
         - containerPort: 8601
         env:

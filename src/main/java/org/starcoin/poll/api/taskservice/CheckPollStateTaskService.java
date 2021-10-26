@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.dao.PollItemRepository;
 import org.starcoin.poll.api.service.ContractService;
-import org.starcoin.poll.api.service.FeishuWebhookService;
 import org.starcoin.poll.api.service.MailService;
+import org.starcoin.poll.api.service.WebhookService;
 import org.starcoin.poll.api.system.MailConfiguration;
 
 import java.math.BigInteger;
@@ -46,7 +46,7 @@ public class CheckPollStateTaskService {
     private MailService mailService;
 
     @Autowired
-    private FeishuWebhookService feishuWebhookService;
+    private WebhookService webhookService;
 
     @Scheduled(fixedDelay = 1000 * 60 * 60) // 每小时检查一次？
     @SuppressWarnings("unchecked")
@@ -69,7 +69,7 @@ public class CheckPollStateTaskService {
                 String subject = mailSubjectPrefix + "Poll is about to end! #" + pollItem.getIdOnChain();
                 String content = "Yes votes: " + yesVotes + ". It did NOT reach quorum votes: " + quorumVotes;
                 mailService.sendMail(subject, content, Arrays.asList(alertMailTo.split(",")));
-                feishuWebhookService.post(subject, content);
+                webhookService.post(subject, content);
             }
         });
     }

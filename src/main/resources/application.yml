@@ -65,8 +65,8 @@ elasticsearch:
 starcoin:
   json-rpc-url: ${STARCOIN_JSON_RPC_URL}
 
-feishu:
-  webhook-url: ${FEISHU_WEBHOOK_URL}
+discord:
+  webhook-url: ${DISCORD_WEBHOOK_URL}
 
 logging:
   level:
