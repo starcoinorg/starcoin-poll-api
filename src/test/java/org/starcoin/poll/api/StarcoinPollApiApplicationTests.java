@@ -5,7 +5,6 @@ import com.novi.serde.DeserializationError;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.starcoin.poll.api.service.FeishuWebhookService;
 import org.starcoin.poll.api.service.PollItemService;
 import org.starcoin.poll.api.service.TransactionService;
 
@@ -18,8 +17,8 @@ class StarcoinPollApiApplicationTests {
     @Autowired
     PollItemService pollItemService;
 
-    @Autowired
-    FeishuWebhookService feishuWebhookService;
+//    @Autowired
+//    WebhookService feishuWebhookService;
 
     @Autowired
     TransactionService transactionService;

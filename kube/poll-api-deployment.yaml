@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: poll-api
-        image: starcoin/starcoin_poll:sha-a9edd51
+        image: starcoin/starcoin_poll:sha-089beb3
         ports:
         - containerPort: 8600
         env:
@@ -66,10 +66,10 @@ spec:
             secretKeyRef:
               name: poll-alert-mail-secret
               key: password
-        - name: FEISHU_WEBHOOK_URL
+        - name: DISCORD_WEBHOOK_URL
           valueFrom:
             secretKeyRef:
-              name: feishu-webhook-secret
+              name: discord-webhook-secret
               key: url
         - name: POLL_API_PORT
           value: "8600"
