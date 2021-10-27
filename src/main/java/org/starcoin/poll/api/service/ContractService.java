@@ -46,6 +46,9 @@ public class ContractService {
         return jsonRpcUrl == null || jsonRpcUrl.isEmpty() ? MAINNET_JSON_RPC_URL : jsonRpcUrl;
     }
 
+    /**
+     * 查询链上的 proposal 的状态，如果查询失败，抛出 runtime 异常！
+     */
     public int getPollStatus(String idOnChain, String creator, String typeArgs1) {
         JSONObject paramObject = new JSONObject();
         paramObject.put("id", System.currentTimeMillis() + new Random().nextInt(100));
@@ -66,7 +69,7 @@ public class ContractService {
         paramObject.put("params", paramList);
         JSONObject result = post(paramObject);
         if (result.containsKey("error") && !(result.containsKey("result") && null != result.getJSONObject("result"))) {
-            return PROPOSAL_STATE_PENDING; //???
+            throw new RuntimeException("Starcoin PPC error. " + result);//return PROPOSAL_STATE_PENDING; //???
         }
         return result.getJSONArray("result").getJSONObject(0).getIntValue("U8");
     }
