@@ -81,26 +81,29 @@ public class PollController {
                 if (!Objects.equals(oldStatus, status)) {
                     pollItemService.asyncUpdateStatus(id, status);
                 }
-
-                JSONObject pollObj = contractService.getPollVotes(pollItem.getCreator(), pollItem.getTypeArgs1());
-                if (pollObj.containsKey("for_votes")) {
-                    pollItem.setForVotes(pollObj.getLongValue("for_votes"));
-                }
-                if (pollObj.containsKey("against_votes")) {
-                    pollItem.setAgainstVotes(pollObj.getLongValue("against_votes"));
-                }
-                if (pollObj.containsKey("quorum_votes")) {
-                    pollItem.setQuorumVotes(pollObj.getLongValue("quorum_votes"));
-                }
-                if (pollObj.containsKey("start_time")) {
-                    pollItem.setOnChainStartTime(pollObj.getLongValue("start_time"));
-                }
-                if (pollObj.containsKey("end_time")) {
-                    pollItem.setOnChainEndTime(pollObj.getLongValue("end_time"));
-                }
             } catch (RuntimeException e) {
                 logger.error("Update poll status by on-chain info error.", e);
             }
+        }
+        try {
+            JSONObject pollObj = contractService.getPollVotes(pollItem.getCreator(), pollItem.getTypeArgs1());
+            if (pollObj.containsKey("for_votes")) {
+                pollItem.setForVotes(pollObj.getLongValue("for_votes"));
+            }
+            if (pollObj.containsKey("against_votes")) {
+                pollItem.setAgainstVotes(pollObj.getLongValue("against_votes"));
+            }
+            if (pollObj.containsKey("quorum_votes")) {
+                pollItem.setQuorumVotes(pollObj.getLongValue("quorum_votes"));
+            }
+            if (pollObj.containsKey("start_time")) {
+                pollItem.setOnChainStartTime(pollObj.getLongValue("start_time"));
+            }
+            if (pollObj.containsKey("end_time")) {
+                pollItem.setOnChainEndTime(pollObj.getLongValue("end_time"));
+            }
+        } catch (RuntimeException e) {
+            logger.error("Update poll votes by on-chain info error.", e);
         }
     }
 
