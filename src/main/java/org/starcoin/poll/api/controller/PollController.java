@@ -72,19 +72,18 @@ public class PollController {
     }
 
     private void updateByOnChainInfo(PollItem pollItem, Long id) {
-        if (pollItem.getEndTime().compareTo(System.currentTimeMillis()) > 0) {
-            // 投票时间尚未结束，根据链上状态更新数据库中的 status
-            try {
-                Integer status = contractService.getPollStatus(pollItem.getIdOnChain(), pollItem.getCreator(), pollItem.getTypeArgs1());
-                Integer oldStatus = pollItem.getStatus();
-                pollItem.setStatus(status);
-                if (!Objects.equals(oldStatus, status)) {
-                    pollItemService.asyncUpdateStatus(id, status);
-                }
-            } catch (RuntimeException e) {
-                logger.error("Update poll status by on-chain info error.", e);
+        //if (pollItem.getEndTime().compareTo(System.currentTimeMillis()) > 0) { // 投票时间尚未结束，根据链上状态更新数据库中的 status
+        try {
+            int status = contractService.getPollStatus(pollItem.getIdOnChain(), pollItem.getCreator(), pollItem.getTypeArgs1());
+            Integer oldStatus = pollItem.getStatus();
+            pollItem.setStatus(status);
+            if (!Objects.equals(oldStatus, status) && status > (oldStatus != null ? oldStatus : -1)) {
+                pollItemService.asyncUpdateStatus(id, status);
             }
+        } catch (RuntimeException e) {
+            logger.error("Update poll status by on-chain info error.", e);
         }
+        //}
         try {
             JSONObject pollObj = contractService.getPollVotes(pollItem.getCreator(), pollItem.getTypeArgs1());
             if (pollObj.containsKey("for_votes")) {
