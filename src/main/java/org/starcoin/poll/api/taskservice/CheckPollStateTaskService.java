@@ -67,7 +67,7 @@ public class CheckPollStateTaskService {
             if (isPollAboutToEnd(endTimeMills) && yesVotes.compareTo(quorumVotes) < 0) {
                 LOG.info("Poll is about to end! Id(onChain): " + pollItem.getIdOnChain());
                 String subject = mailSubjectPrefix + "Poll is about to end! #" + pollItem.getIdOnChain();
-                String content = "Yes votes: " + yesVotes + ". It did NOT reach quorum votes: " + quorumVotes;
+                String content = "Now yes-votes: " + yesVotes + ". It dose NOT yet reach quorum-votes: " + quorumVotes;
                 mailService.sendMail(subject, content, Arrays.asList(alertMailTo.split(",")));
                 webhookService.post(subject, content);
             }
