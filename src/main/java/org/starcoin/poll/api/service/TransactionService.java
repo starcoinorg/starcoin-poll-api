@@ -34,13 +34,23 @@ public class TransactionService {
         this.client = client;
     }
 
-    public List<JSONObject> getEventsByProposalIdAndProposer(String network, Long proposalId, String proposer) throws IOException, DeserializationError {
+    /**
+     * Get events from ES.
+     *
+     * @param indexPrefix index prefix
+     * @param proposalId  proposal Id
+     * @param proposer    proposer
+     * @return
+     * @throws IOException
+     * @throws DeserializationError
+     */
+    public List<JSONObject> getEventsByProposalIdAndProposer(String indexPrefix, Long proposalId, String proposer) throws IOException, DeserializationError {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         boolQuery.must(QueryBuilders.matchQuery("tag_name", "VoteChangedEvent"));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQuery);
         searchSourceBuilder.size(50);
-        SearchRequest searchRequest = new SearchRequest(ServiceUtils.getIndex(network, Constant.TRANSACTION_EVENT_INDEX));
+        SearchRequest searchRequest = new SearchRequest(ServiceUtils.getIndex(indexPrefix, Constant.TRANSACTION_EVENT_INDEX));
         Scroll scroll = new Scroll(TimeValue.timeValueMinutes(10L));
         searchRequest.scroll(scroll).source(searchSourceBuilder);
         SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);

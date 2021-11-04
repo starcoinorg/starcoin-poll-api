@@ -69,7 +69,7 @@ public class ContractService {
         paramObject.put("params", paramList);
         JSONObject result = post(paramObject);
         if (result.containsKey("error") && !(result.containsKey("result") && null != result.getJSONObject("result"))) {
-            throw new RuntimeException("Starcoin PPC error. " + result);//return PROPOSAL_STATE_PENDING; //???
+            throw new RuntimeException("Starcoin RPC error. " + result);//return PROPOSAL_STATE_PENDING; //???
         }
         return result.getJSONArray("result").getJSONObject(0).getIntValue("U8");
     }
