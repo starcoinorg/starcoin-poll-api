@@ -188,7 +188,12 @@ public class PollController {
     public Result<List<JSONObject>> delPollItem(@PathVariable("network") String network,
                                                 @PathVariable("proposalId") Long proposalId,
                                                 @PathVariable("proposer") String proposer) throws IOException, DeserializationError {
-        List<JSONObject> list = transactionService.getEventsByProposalIdAndProposer(network, proposalId, proposer);
+        List<JSONObject> list = transactionService.getEventsByProposalIdAndProposer(networkToESIndexPrefix(network), proposalId, proposer);
         return ResultUtils.success(list);
+    }
+
+    private String networkToESIndexPrefix(String network) {
+        //todo config this?
+        return network + ".0727";//"main.0727"
     }
 }

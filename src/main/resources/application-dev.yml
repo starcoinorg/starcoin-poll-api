@@ -5,11 +5,17 @@ spring:
     username: ${MAIL_SENDER_USERNAME}
     password: ${MAIL_SENDER_PASSWORD}
 
+  flyway:
+    enabled: false # 启用或禁用 flyway
 
 alert:
   mail:
     to: ${ALERT_MAIL_TO}
     subject-prefix: "Test: "
+
+
+#starcoin:
+#  json-rpc-url: https://barnard-seed.starcoin.org
 
 
 logging:
