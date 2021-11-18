@@ -23,7 +23,9 @@ import java.util.Objects;
 @RestController
 @RequestMapping("v1/polls")
 public class PollController {
-
+    //
+    // todo 目前修改状态的接口（POST 方法）只支持使用 application/x-www-form-urlencoded 的消息体。不支持 application/json 编码。
+    //
     private static final Logger logger = LoggerFactory.getLogger(PollController.class);
 
     @Resource
