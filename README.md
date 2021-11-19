@@ -32,6 +32,22 @@ HTTP GET test:
 http://localhost:8686/v1/polls/detail/1
 ```
 
+Debug CORS requests using cURL:
+
+```shell
+% curl -H "Origin: http://example.com" \                                                                                 
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: X-Requested-With" \
+  -X OPTIONS --verbose \
+http://localhost:8600/v1/polls/add
+```
+
+API doc:
+
+```text
+http://localhost:8600/poll-api-doc/swagger-ui/index.html
+```
+
 ## License
 
 Starcoin Poll API is licensed as Apache 2.0.
