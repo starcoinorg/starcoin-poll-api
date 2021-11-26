@@ -93,7 +93,7 @@ public class PollItemService {
             isUpdate = true;
         }
         if (null != descriptionEn && descriptionEn.length() > 0) {
-            item.setDescription(descriptionEn);
+            item.setDescriptionEn(descriptionEn);
             isUpdate = true;
         }
         if (null != endTime) {
@@ -113,7 +113,7 @@ public class PollItemService {
             isUpdate = true;
         }
         if (null != titleEn && titleEn.length() > 0) {
-            item.setTitle(titleEn);
+            item.setTitleEn(titleEn);
             isUpdate = true;
         }
         if (null != typeArgs1 && typeArgs1.length() > 0) {
