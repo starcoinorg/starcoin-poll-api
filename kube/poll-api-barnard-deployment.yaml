@@ -16,12 +16,14 @@ spec:
     spec:
       containers:
       - name: poll-api-barnard
-        image: starcoin/starcoin_poll:sha-089beb3
+        image: starcoin/starcoin_poll:sha-40e4ade
         ports:
         - containerPort: 8601
         env:
         - name: spring_profiles_active
           value: dev
+        - name: STARCOIN_JSON_RPC_URL
+          value: https://barnard-seed.starcoin.org
         - name: SPRING_SECURITY_HTPASSWD
           valueFrom:
             secretKeyRef:
@@ -66,10 +68,11 @@ spec:
             secretKeyRef:
               name: poll-alert-mail-secret
               key: password
-        - name: FEISHU_WEBHOOK_URL
-          valueFrom:
-            secretKeyRef:
-              name: feishu-webhook-secret
-              key: url
+        - name: DISCORD_WEBHOOK_URL
+          value: http://noexist.com
+#          valueFrom:
+#            secretKeyRef:
+#              name: feishu-webhook-secret
+#              key: url
         - name: POLL_API_PORT
           value: "8601"
