@@ -63,6 +63,7 @@ elasticsearch:
   connectionRequestTimeout: 2000
 
 starcoin:
+  network: main
   json-rpc-url: ${STARCOIN_JSON_RPC_URL}
 
 discord:

@@ -5,7 +5,9 @@ import com.novi.serde.DeserializationError;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.starcoin.poll.api.bean.PollItem;
 import org.starcoin.poll.api.service.PollItemService;
+import org.starcoin.poll.api.service.ServiceFacade;
 import org.starcoin.poll.api.service.TransactionService;
 import org.starcoin.poll.api.service.WebhookService;
 
@@ -24,8 +26,15 @@ class StarcoinPollApiApplicationTests {
     @Autowired
     TransactionService transactionService;
 
+    @Autowired
+    ServiceFacade serviceFacade;
+
     @Test
     void contextLoads() {
+        Long id =1L;
+        PollItem pollItem = pollItemService.get(id);
+        serviceFacade.updateByOnChainInfo(pollItem);
+        if (true) return;
 //        webhookService.post("Poll is about to end! Id(onChain): 7", "vote!");
 //        if (true) return;
         try {

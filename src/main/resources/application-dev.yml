@@ -4,7 +4,13 @@ spring:
     host: ${MAIL_SMTP_HOST}
     username: ${MAIL_SENDER_USERNAME}
     password: ${MAIL_SENDER_PASSWORD}
-
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          # auto: create # 开发阶段使用
+          auto: update
   flyway:
     enabled: false # 启用或禁用 flyway
 
@@ -13,8 +19,8 @@ alert:
     to: ${ALERT_MAIL_TO}
     subject-prefix: "Test: "
 
-
-#starcoin:
+starcoin:
+  network: main
 #  json-rpc-url: https://barnard-seed.starcoin.org
 
 

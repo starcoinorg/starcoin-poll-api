@@ -73,14 +73,14 @@ public class PollItem {
     @Column
     private Long deletedAt;
 
-    @Transient
+    @Column
     private Long quorumVotes;
 
-    @Transient
+    @Column
     private Long onChainStartTime;
 
-    @Transient
-    private Long onChainEndTime;
+//    @Transient
+//    private Long onChainEndTime;
 
     public Long getId() {
         return id;
@@ -234,12 +234,13 @@ public class PollItem {
         this.onChainStartTime = onChainStartTime;
     }
 
+    // for compatible
     public Long getOnChainEndTime() {
-        return onChainEndTime;
+        return endTime;
     }
 
     public void setOnChainEndTime(Long onChainEndTime) {
-        this.onChainEndTime = onChainEndTime;
+        this.endTime = onChainEndTime;
     }
 
 
@@ -265,7 +266,7 @@ public class PollItem {
                 ", deletedAt=" + deletedAt +
                 ", quorumVotes=" + quorumVotes +
                 ", onChainStartTime=" + onChainStartTime +
-                ", onChainEndTime=" + onChainEndTime +
+                //", onChainEndTime=" + onChainEndTime +
                 '}';
     }
 }

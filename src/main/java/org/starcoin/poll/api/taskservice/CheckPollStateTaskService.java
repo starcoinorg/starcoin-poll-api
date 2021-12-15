@@ -36,6 +36,9 @@ public class CheckPollStateTaskService {
     @Value("${alert.mail.subject-prefix}")
     private String mailSubjectPrefix;
 
+    @Value("${starcoin.network}")
+    private String starcoinNetwork;
+
     @Autowired
     private PollItemRepository pollItemRepository;
 
@@ -51,7 +54,7 @@ public class CheckPollStateTaskService {
     @Scheduled(fixedDelay = 1000 * 60 * 60) // 每小时检查一次？
     @SuppressWarnings("unchecked")
     public void task() {
-        Page<PollItem> pollItems = pollItemRepository.findByNetworkAndDeletedAtIsNullOrderByIdDesc(MAINNET, PageRequest.of(0, 5));
+        Page<PollItem> pollItems = pollItemRepository.findByNetworkAndDeletedAtIsNullOrderByIdDesc(getStarcoinNetwork(), PageRequest.of(0, 5));
         pollItems.forEach(pollItem -> {
             JSONObject responseObj = contractService.getProposalResourceResponseObject(pollItem.getCreator(), pollItem.getTypeArgs1());
             if (!ContractService.indicatesSuccess(responseObj)) {
@@ -88,5 +91,9 @@ public class CheckPollStateTaskService {
         }
         Map<String, Object> viMap = (Map<String, Object>) valueItem.get(1);
         return viMap.get(valueType);
+    }
+
+    public String getStarcoinNetwork() {
+        return starcoinNetwork != null && !starcoinNetwork.isEmpty() ? starcoinNetwork : MAINNET;
     }
 }

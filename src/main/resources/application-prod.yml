@@ -12,3 +12,5 @@ alert:
 
 starcoin:
   json-rpc-url: https://main-seed.starcoin.org
+  network: main
+
