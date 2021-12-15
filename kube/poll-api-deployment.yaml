@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: poll-api
-        image: starcoin/starcoin_poll:sha-a329f1e
+        image: starcoin/starcoin_poll:sha-40e4ade
         ports:
         - containerPort: 8600
         env:

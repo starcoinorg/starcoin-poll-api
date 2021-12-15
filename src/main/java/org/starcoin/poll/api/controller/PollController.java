@@ -17,7 +17,6 @@ import org.starcoin.poll.api.vo.ResultUtils;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 @Api(tags = {"投票 API"})
 @RestController
@@ -48,7 +47,7 @@ public class PollController {
         if (null == item) {
             return ResultUtils.failure();
         }
-        updateByOnChainInfo(item, id);
+        //updateByOnChainInfo(item, id);
         return ResultUtils.success(item);
     }
 
@@ -66,46 +65,11 @@ public class PollController {
         }
         PageResult<PollItem> pageResult = pollItemService.getListByNetwork(network, page - 1, count);
         List<PollItem> list = pageResult.getList();
-        for (PollItem item : list) {
-            updateByOnChainInfo(item, item.getId());
-        }
+//        for (PollItem item : list) {
+//            updateByOnChainInfo(item, item.getId());
+//        }
         pageResult.setList(list);
         return ResultUtils.success(pageResult);
-    }
-
-    private void updateByOnChainInfo(PollItem pollItem, Long id) {
-        //if (pollItem.getEndTime().compareTo(System.currentTimeMillis()) > 0) { // 投票时间尚未结束，根据链上状态更新数据库中的 status
-        try {
-            int status = contractService.getPollStatus(pollItem.getIdOnChain(), pollItem.getCreator(), pollItem.getTypeArgs1());
-            Integer oldStatus = pollItem.getStatus();
-            pollItem.setStatus(status);
-            if (!Objects.equals(oldStatus, status) && status > (oldStatus != null ? oldStatus : -1)) {
-                pollItemService.asyncUpdateStatus(id, status);
-            }
-        } catch (RuntimeException e) {
-            logger.error("Update poll status by on-chain info error.", e);
-        }
-        //}
-        try {
-            JSONObject pollObj = contractService.getPollVotes(pollItem.getCreator(), pollItem.getTypeArgs1());
-            if (pollObj.containsKey("for_votes")) {
-                pollItem.setForVotes(pollObj.getLongValue("for_votes"));
-            }
-            if (pollObj.containsKey("against_votes")) {
-                pollItem.setAgainstVotes(pollObj.getLongValue("against_votes"));
-            }
-            if (pollObj.containsKey("quorum_votes")) {
-                pollItem.setQuorumVotes(pollObj.getLongValue("quorum_votes"));
-            }
-            if (pollObj.containsKey("start_time")) {
-                pollItem.setOnChainStartTime(pollObj.getLongValue("start_time"));
-            }
-            if (pollObj.containsKey("end_time")) {
-                pollItem.setOnChainEndTime(pollObj.getLongValue("end_time"));
-            }
-        } catch (RuntimeException e) {
-            logger.error("Update poll votes by on-chain info error.", e);
-        }
     }
 
     @ApiOperation(value = "添加配置信息")
