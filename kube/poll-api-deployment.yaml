@@ -16,12 +16,14 @@ spec:
     spec:
       containers:
       - name: poll-api
-        image: starcoin/starcoin_poll:sha-eb5680e
+        image: starcoin/starcoin_poll:sha-b8f3ace
         ports:
         - containerPort: 8600
         env:
         - name: spring_profiles_active
           value: prod
+        - name: FORMAT_MESSAGES_PATTERN_DISABLE_LOOKUPS
+          value: "true"
         - name: SPRING_SECURITY_HTPASSWD
           valueFrom:
             secretKeyRef:
