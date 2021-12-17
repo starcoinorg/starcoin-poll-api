@@ -30,6 +30,7 @@ public class PollItemService {
                        Integer status, String network, String idOnChain) {
         PollItem item = getByTitleOrTitleEn(title, titleEn);
         if (null != item) {
+            logger.info("try to add a poll title already exists.");
             return false;
         }
         item = new PollItem();
@@ -77,6 +78,7 @@ public class PollItemService {
     ) {
         PollItem item = get(id);
         if (null == item) {
+            logger.info("try to update a poll not existed.");
             return false;
         }
         boolean isUpdate = false;

@@ -42,6 +42,16 @@ Debug CORS requests using cURL:
 http://localhost:8600/v1/polls/add
 ```
 
+Test update a poll:
+
+```shell
+% curl --verbose -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "Accept: */*" \
+  -H "Authorization: Basic YWRtaW46YWRtaW4=" \
+  -d "title=%E6%B5%8B%E8%AF%95%E6%8F%90%E6%A1%882&titleEn=testProposal28&descriptionEn=proposal+description+2&description=%E6%B5%8B%E8%AF%95%E6%8F%90%E6%A1%88%E6%8F%8F%E8%BF%B02%E4%B8%AD%E6%96%87&creator=0x4234234234&network=main&status=1&link=https%3A%3A%2F%2Fgithub.com%2Fdiscussions%2F343&typeArgs1=0x1%3A%3AToken%3A%3AToken&idOnChain=8&databaseID=47&forVotes=1000000&againstVotes=1000&endTime=1688988888&id=47" \
+http://localhost:8600/v1/polls/modif
+```
+
 API doc:
 
 ```text
