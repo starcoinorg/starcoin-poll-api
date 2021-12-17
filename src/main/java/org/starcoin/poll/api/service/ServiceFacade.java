@@ -37,7 +37,7 @@ public class ServiceFacade {
                 pollItemRepository.save(pollItem);
             }
         } catch (RuntimeException e) {
-            LOGGER.error("Update poll status by on-chain info error.", e);
+            LOGGER.debug("Update poll status by on-chain info error.", e);
         }
         //}
         try {
@@ -59,7 +59,7 @@ public class ServiceFacade {
             }
             pollItemRepository.save(pollItem);
         } catch (RuntimeException e) {
-            LOGGER.error("Update poll votes by on-chain info error.", e);
+            LOGGER.debug("Update poll votes by on-chain info error.", e);
         }
 
     }
