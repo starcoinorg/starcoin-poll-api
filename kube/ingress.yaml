@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: "poll-api-ingress"
@@ -14,10 +14,16 @@ spec:
     - http:
         paths:
           - path: /v1/polls/*
+            pathType: ImplementationSpecific
             backend:
-              serviceName: "poll-api"
-              servicePort: 80
+              service:
+                name: "poll-api"
+                port:
+                  number: 80
           - path: /poll-api-doc/*
+            pathType: ImplementationSpecific
             backend:
-              serviceName: "poll-api"
-              servicePort: 80
+              service:
+                name: "poll-api"
+                port:
+                  number: 80
